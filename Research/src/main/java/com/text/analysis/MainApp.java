@@ -17,6 +17,8 @@ import com.text.analysis.core.POSTagger;
 import com.text.analysis.core.Relations;
 import com.text.analysis.core.SymanticAnalysis;
 import com.text.analysis.core.Thesaurus;
+import com.text.analysis.model.AcademicData;
+import com.text.analysis.model.CPTData;
 import com.text.analysis.model.Concept;
 import com.text.analysis.readerwriter.Reader;
 import com.text.analysis.util.CoreUtil;
@@ -30,46 +32,50 @@ public class MainApp {
 
 		// Preprocessing.preprocessFiles();
 
-		Tokenizer tokanizer = POSTagger.tokanizer();
-		POSTaggerME POSTaggerME = POSTagger.posTaggerME();
-
-		Map<String, List<String>> docMap = Reader.readPreprocessFiles();
-
-		List<Concept> nounPharaseConceptsList = Reader.readNounPhrases();
-
-		List<Concept> synanymsList = Thesaurus.findSynanyms(nounPharaseConceptsList);
-
-		List<String> mergedDocList = CoreUtil.convertSingleDoc(docMap);
-
-		List<Concept> seedConceptsList = FindSeedConcepts.find(synanymsList, docMap, mergedDocList);
-
-		List<Concept> candidateConceptsList = FindCandidateConcepts.find(seedConceptsList);
-
-		List<Concept> domainConceptsList = FindDomainConcepts.semanticFiltering(candidateConceptsList, mergedDocList,
-				docMap);
-
-		Map<String, List<Concept>> clustersMap = Clustering.clustering(candidateConceptsList, domainConceptsList);
-
-		List<Concept> objectAttributesList = FormalSymantics.findSymanticsOfConcept(clustersMap, synanymsList,
-				mergedDocList, tokanizer, POSTaggerME);
-
-		List<String> relations = Relations.findRelations(objectAttributesList);
-
-		List<String> outputRelations = Relations.findOutputRelations(domainConceptsList, candidateConceptsList);
-
-		List<String> inputRelations = Relations.findInputRelations(seedConceptsList, nounPharaseConceptsList);
-
-		List<Concept> relativeRelevence = FindRelativeRelevence
-				.findRelativeRelevenceOfObjectsAttributes(objectAttributesList);
-
-		OperatorsOfConceptAlgebra.find(relativeRelevence);
-
-		SymanticAnalysis.analysis(relativeRelevence, relations, inputRelations, outputRelations);
-
-		OperatorsOfSymanticAlgebra.find(relativeRelevence);
-
-		BehaviourSemanticEquivalence.find(relativeRelevence);
-
+//		Tokenizer tokanizer = POSTagger.tokanizer();
+//		POSTaggerME POSTaggerME = POSTagger.posTaggerME();
+//
+//		Map<String, List<String>> docMap = Reader.readPreprocessFiles();
+//
+//		List<Concept> nounPharaseConceptsList = Reader.readNounPhrases();
+//
+//		List<Concept> synanymsList = Thesaurus.findSynanyms(nounPharaseConceptsList);
+//
+//		List<String> mergedDocList = CoreUtil.convertSingleDoc(docMap);
+//
+//		List<Concept> seedConceptsList = FindSeedConcepts.find(synanymsList, docMap, mergedDocList);
+//
+//		List<Concept> candidateConceptsList = FindCandidateConcepts.find(seedConceptsList);
+//
+//		List<Concept> domainConceptsList = FindDomainConcepts.semanticFiltering(candidateConceptsList, mergedDocList,
+//				docMap);
+//
+//		Map<String, List<Concept>> clustersMap = Clustering.clustering(candidateConceptsList, domainConceptsList);
+//
+//		List<Concept> objectAttributesList = FormalSymantics.findSymanticsOfConcept(clustersMap, synanymsList,
+//				mergedDocList, tokanizer, POSTaggerME);
+//
+//		List<String> relations = Relations.findRelations(objectAttributesList);
+//
+//		List<String> outputRelations = Relations.findOutputRelations(domainConceptsList, candidateConceptsList);
+//
+//		List<String> inputRelations = Relations.findInputRelations(seedConceptsList, nounPharaseConceptsList);
+//
+//		List<Concept> relativeRelevence = FindRelativeRelevence
+//				.findRelativeRelevenceOfObjectsAttributes(objectAttributesList);
+//
+//		OperatorsOfConceptAlgebra.find(relativeRelevence);
+//
+//		SymanticAnalysis.analysis(relativeRelevence, relations, inputRelations, outputRelations);
+//
+//		OperatorsOfSymanticAlgebra.find(relativeRelevence);
+//
+//		BehaviourSemanticEquivalence.find(relativeRelevence);
+		
+		List<AcademicData> academicDataList = Reader.readAcademicFile();
+		List<CPTData> cpt234DataList = Reader.readCPT234DataList();
+		List<CPTData> cpt567DataList = Reader.readCPT567DataList();
+         
 		System.out.println();
 
 	}
